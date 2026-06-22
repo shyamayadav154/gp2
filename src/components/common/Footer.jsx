@@ -58,7 +58,7 @@ export default function Footer() {
                 <FiTwitter size={16} />
               </a>
               <a
-                href="https://github.com"
+                href="https://github.com/29sahilsolanki"
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-emerald-400 transition-colors p-1"
@@ -67,7 +67,7 @@ export default function Footer() {
                 <FiGithub size={16} />
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/sahil-solanki-6a3442413?utm_source=share_via&utm_content=profile&utm_medium=member_ios"
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-emerald-400 transition-colors p-1"
