@@ -62,6 +62,30 @@ export const ManagerProvider = ({ children }) => {
     geoFencingMutation.mutate(parameter, options);
   };
 
+  //---------------------Grant permission---------------------//
+  const grantAccessMutation = useMutation({
+    mutationFn: async (id) => {
+      const url = `/api/manager/access-handler/${id}`;
+      const res = await axios.delete(url);
+      return res.data;
+    },
+    onSuccess: (data) => {
+      toast.success(data?.message || "Access parameter updated successfully!");
+      queryClient.invalidateQueries({ queryKey: ["manager-workers"] });
+    },
+    onError: (error) => {
+      toast.error(
+        error?.response?.data?.message || "Failed to change worker permission",
+      );
+      console.log(error);
+    },
+  });
+
+  // Wrapper Function Of Grant Access
+  const handleAccessChange = (id) => {
+    grantAccessMutation.mutate(id);
+  };
+
   // -------------------- 3. Map State Coordinates --------------------//
   const [location, setLocaton] = useState(null);
   const [searchCoords, setSearchCoords] = useState([28.7041, 77.1025]); // Default: Delhi
@@ -83,7 +107,9 @@ export const ManagerProvider = ({ children }) => {
         clickCoords,
         setClickCoords,
         setGeoFencing,
-        isSettingGeofence: geoFencingMutation.isPending, // 🎯 React Query automatic loader
+        isSettingGeofence: geoFencingMutation.isPending,
+        handleAccessChange,
+        isProcessingAccess: grantAccessMutation.isPending,
       }}
     >
       {children}

@@ -5,7 +5,8 @@ import { useManager } from "@/context/ManagerContext";
 import Image from "next/image";
 
 export default function ManageWorkers() {
-  const { workers, loadingWorkers } = useManager();
+  const { workers, loadingWorkers, handleAccessChange, isProcessingAccess } =
+    useManager();
 
   if (loadingWorkers) {
     return (
@@ -183,15 +184,25 @@ export default function ManageWorkers() {
                 </div>
 
                 <div className="flex gap-3 pt-2">
-                  <button
-                    type="button"
-                    className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider shadow-sm shadow-emerald-100 transition active:scale-[0.98] cursor-pointer"
-                    onClick={() => {
-                      console.log(`Granting access to ${p.name}`);
-                    }}
-                  >
-                    Grant Access
-                  </button>
+                  {p.access === "DENIED" ? (
+                    <button
+                      type="button"
+                      disabled={isProcessingAccess}
+                      className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider shadow-sm shadow-emerald-100 transition active:scale-[0.98] cursor-pointer"
+                      onClick={() => handleAccessChange(p.id)}
+                    >
+                      {isProcessingAccess ? "Processing..." : "Grant Access"}
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled={isProcessingAccess}
+                      className="flex-1 bg-rose-500 hover:bg-rose-600 text-white py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider shadow-sm shadow-rose-100 transition active:scale-[0.98] cursor-pointer"
+                      onClick={() => handleAccessChange(p.id)}
+                    >
+                      {isProcessingAccess ? "Processing..." : "Revoke Access"}
+                    </button>
+                  )}
                   <Link
                     href={`/manager/manage-workers/${p.id}`}
                     className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider text-center border border-slate-200/60 transition active:scale-[0.98]"

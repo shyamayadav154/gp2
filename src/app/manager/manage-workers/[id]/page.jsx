@@ -7,6 +7,7 @@ import AverageLoginChart from "@/components/manager/AverageLoginChart";
 import Image from "next/image";
 
 export default function WorkerDetails({ params }) {
+  const { handleAccessChange, isProcessingAccess } = useManager();
   const { id } = use(params);
   const { workers } = useManager();
   const worker = workers?.find((w) => w.id === id);
@@ -119,15 +120,25 @@ export default function WorkerDetails({ params }) {
             </div>
 
             <div className="border-t border-slate-200/60 pt-3 flex items-end sm:justify-start">
-              <button
-                type="button"
-                className="bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider shadow-sm transition active:scale-[0.98] cursor-pointer w-full sm:w-auto text-center"
-                onClick={() => {
-                  console.log(`Granting access to ${worker.name}`);
-                }}
-              >
-                Grant Access
-              </button>
+              {worker.access === "DENIED" ? (
+                <button
+                  type="button"
+                  disabled={isProcessingAccess}
+                  className="bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider shadow-sm transition active:scale-[0.98] cursor-pointer w-full sm:w-auto text-center disabled:opacity-60"
+                  onClick={() => handleAccessChange(worker.id)} // 🚀 Direct query client trigger
+                >
+                  {isProcessingAccess ? "Processing..." : "Grant Access"}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  disabled={isProcessingAccess}
+                  className="bg-rose-500 hover:bg-rose-600 text-white px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider shadow-sm transition active:scale-[0.98] cursor-pointer w-full sm:w-auto text-center disabled:opacity-60"
+                  onClick={() => handleAccessChange(worker.id)}
+                >
+                  {isProcessingAccess ? "Processing..." : "Revoke Access"}
+                </button>
+              )}
             </div>
           </div>
         </div>
