@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useManager } from "@/context/ManagerContext";
+import Image from "next/image";
 
 export default function ManageWorkers() {
   const { workers, loadingWorkers } = useManager();
@@ -15,6 +16,7 @@ export default function ManageWorkers() {
       </div>
     );
   }
+
   if (!workers || workers.length === 0) {
     return (
       <div className="min-h-screen w-full flex items-center justify-center bg-slate-50/50">
@@ -23,7 +25,7 @@ export default function ManageWorkers() {
     );
   }
 
-  // 1. Live Counters Engine Tracker
+  // Live Counters Engine Tracker
   const totalWorkers = workers.length;
   const clockedInCount = workers.filter(
     (w) => w?.shifts?.[0]?.status === "CLOCKEDIN",
@@ -32,9 +34,8 @@ export default function ManageWorkers() {
 
   return (
     <div className="pt-24 pb-12 px-4 md:px-8 max-w-7xl mx-auto w-full min-h-screen flex flex-col gap-6 text-slate-900">
-      {/* ==================== 📊 1. LIVE PLATFORM METRICS GRID COUNTERS ==================== */}
+      {/* ==================== 📊 Live Platform Metrics Counters ==================== */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 w-full">
-        {/* Box A: Total Registered Workers */}
         <div className="bg-white border border-slate-200/80 p-5 rounded-2xl shadow-sm flex items-center gap-4">
           <span className="text-2xl bg-slate-50 p-2.5 rounded-xl border border-slate-100 shadow-inner">
             👤
@@ -49,7 +50,6 @@ export default function ManageWorkers() {
           </div>
         </div>
 
-        {/* Box B: Active Workers (Clocked In) */}
         <div className="bg-white border border-slate-200/80 p-5 rounded-2xl shadow-sm flex items-center gap-4">
           <span className="text-2xl bg-emerald-50 text-emerald-600 p-2.5 rounded-xl border border-emerald-100/50 shadow-inner">
             ⚡
@@ -64,7 +64,6 @@ export default function ManageWorkers() {
           </div>
         </div>
 
-        {/* Box C: Off Duty Workers (Clocked Out) */}
         <div className="bg-white border border-slate-200/80 p-5 rounded-2xl shadow-sm flex items-center gap-4">
           <span className="text-2xl bg-slate-50 p-2.5 rounded-xl border border-slate-100 shadow-inner">
             🛑
@@ -80,7 +79,7 @@ export default function ManageWorkers() {
         </div>
       </div>
 
-      {/* ==================== 👤 2. WORKER GRID CONTAINER MATRIX ==================== */}
+      {/* ==================== 👤 Worker Grid Matrix ==================== */}
       <div className="mt-2">
         <h1 className="text-2xl font-black tracking-tight text-slate-800 mb-5 flex items-center gap-2">
           Worker Details
@@ -93,7 +92,6 @@ export default function ManageWorkers() {
             return (
               <div
                 key={p.id}
-                /* 🟢 CARD LOOK ENHANCED: Added shadow refinement and crisp slate borders */
                 className={`bg-white border rounded-2xl p-5 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between ${
                   isClockedIn
                     ? "border-slate-200/90 border-l-4 border-l-emerald-500"
@@ -101,14 +99,14 @@ export default function ManageWorkers() {
                 }`}
               >
                 <div>
-                  {/* Top Block Details Info row */}
                   <div className="flex items-center gap-4 border-b border-slate-100 pb-3 mb-3.5">
                     <div className="relative shrink-0">
-                      <img
-                        src={
-                          p.profilePic || "https://cdn.auth0.com/avatars/29.png"
-                        }
-                        alt={p.name}
+                      <Image
+                        src={p.profilePic || "No image"}
+                        alt={p.name || "Worker Profile"}
+                        width={56}
+                        height={56}
+                        unoptimized
                         className="w-14 h-14 rounded-full object-cover border border-slate-200/80 shadow-sm"
                       />
                       <span
@@ -134,23 +132,19 @@ export default function ManageWorkers() {
                     </div>
                   </div>
 
-                  {/* Inside Log Metric Parameters */}
-                  {/* 🟢 CARDS SPACE POLISHED: Spacings inside metadata rows made cleanly aligned */}
                   <div className="space-y-2.5 text-xs text-slate-600 font-medium mb-5 bg-slate-50/60 border border-slate-200/40 rounded-xl p-3 shadow-inner">
                     <div className="flex justify-between items-center">
                       <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                         Registry Date
                       </span>
                       <span className="text-slate-700 font-semibold font-mono">
-                        {p?.shifts?.[0]?.createdAt
-                          ? new Date(p.shifts[0].createdAt).toLocaleString(
-                              "en-IN",
-                              {
-                                day: "2-digit",
-                                month: "short",
-                                year: "numeric",
-                              },
-                            )
+                        {/* 🟢 CRASH FIX: shifts[0] ki jagah direct p.createdAt se target kiya taaki safe date mil sake */}
+                        {p?.createdAt
+                          ? new Date(p.createdAt).toLocaleDateString("en-IN", {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                            })
                           : "--/--/----"}
                       </span>
                     </div>
@@ -188,8 +182,6 @@ export default function ManageWorkers() {
                   </div>
                 </div>
 
-                {/* Footer Dynamic Operations CTA Block Links */}
-                {/* 🟢 ACTIONS BUTTONS POLISHED: Better text layout and clean padding configurations */}
                 <div className="flex gap-3 pt-2">
                   <button
                     type="button"

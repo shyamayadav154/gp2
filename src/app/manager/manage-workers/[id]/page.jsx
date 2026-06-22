@@ -61,16 +61,15 @@ export default function WorkerDetails({ params }) {
       </div>
 
       {/* worker profile card */}
-
       <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm flex flex-col sm:flex-row items-center sm:items-start gap-5">
         <div className="relative shrink-0">
           <Image
-            src={worker.profilePic || "no profile pic"}
+            src={worker.profilePic || "https://cdn.auth0.com/avatars/29.png"}
             alt={worker.name}
             width={80}
             height={80}
             unoptimized
-            className="rounded-full object-cover border-2 border-slate-200/60 shadow-sm"
+            className="w-20 h-20 rounded-full object-cover border-2 border-slate-200/60 shadow-sm shrink-0"
           />
 
           <span
@@ -149,7 +148,7 @@ export default function WorkerDetails({ params }) {
         </div>
       </div>
 
-      {/*  SHIFT HISTORY LOGS */}
+      {/* SHIFT HISTORY LOGS */}
       <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm flex flex-col gap-4">
         <div>
           <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-2">

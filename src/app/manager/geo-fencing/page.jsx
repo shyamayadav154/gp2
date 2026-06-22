@@ -16,13 +16,17 @@ const MapComponent = dynamic(() => import("@/components/common/MapComponent"), {
 });
 
 export default function GeoFencing() {
-  const { location, clickCoords, setGeoFencing, locationPerimeter } =
-    useManager();
+  const {
+    location,
+    clickCoords,
+    setGeoFencing,
+    locationPerimeter,
+    isSettingGeofence,
+  } = useManager();
+
   const [radius, setRadius] = useState(100);
 
-  const [loading, setLoading] = useState(false);
-
-  const handleSave = async () => {
+  const handleSave = () => {
     if (!clickCoords)
       return toast.info("Please select a location on the map first..!!");
 
@@ -38,15 +42,12 @@ export default function GeoFencing() {
       radius: radius,
       locationName: location?.display_name,
     };
-    try {
-      setLoading(true);
-      await setGeoFencing(parameter);
-      setRadius(100);
-    } catch {
-      console.log("Task execution failed..!!");
-    } finally {
-      setLoading(false);
-    }
+
+    setGeoFencing(parameter, {
+      onSuccess: () => {
+        setRadius(100);
+      },
+    });
   };
 
   return (
@@ -57,7 +58,7 @@ export default function GeoFencing() {
           <MapComponent />
         </div>
 
-        {/*  Location and radius selecter*/}
+        {/* Location and radius selecter*/}
         <div className="w-full lg:w-[36%] flex flex-col gap-4 shrink-0">
           <div className="bg-slate-50/60 border border-slate-200/50 rounded-2xl p-4 sm:p-5 flex flex-col gap-4 shadow-inner">
             <div>
@@ -117,9 +118,12 @@ export default function GeoFencing() {
             <div className="pt-1">
               <button
                 onClick={handleSave}
+                disabled={isSettingGeofence} // 🟢 React Query flag se double-click safe banaya
                 className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider shadow-md shadow-emerald-100/50 transition-all duration-200 active:scale-[0.99] cursor-pointer"
               >
-                {loading ? "Saving Geofence Zone..." : "Save Geofence Zone"}
+                {isSettingGeofence
+                  ? "Saving Geofence Zone..."
+                  : "Save Geofence Zone"}
               </button>
             </div>
           </div>
