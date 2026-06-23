@@ -57,7 +57,8 @@ export default function Punching() {
           },
         });
       },
-      (error) => console.error(error.message),
+      (error) => alert(`Location Error: ${error.message}`),
+      { enableHighAccuracy: true, timeout: 10000 },
     );
   };
 
@@ -77,20 +78,22 @@ export default function Punching() {
           },
         });
       },
-      (error) => console.error(error.message),
+      (error) => alert(`Location Error: ${error.message}`),
+      { enableHighAccuracy: true, timeout: 10000 },
     );
   };
 
   return (
-    <div className="w-full min-h-screen bg-slate-50/50 pt-20 pb-5 px-6 md:px-8 flex items-start justify-center">
-      <div className="max-w-7xl w-full bg-white border border-slate-200/80 rounded-3xl shadow-2xl p-8 flex flex-col lg:flex-row gap-8 items-stretch transition-all duration-300">
-        {/*  CONTROLS & CLOCK  */}
-        <div className="w-full lg:w-[42%] bg-slate-50/60 border border-slate-200/50 rounded-2xl p-6 flex flex-col justify-between items-center text-center">
+    <div className="w-full min-h-screen bg-slate-50/50 pt-20 pb-5 px-3 md:px-8 flex items-start justify-center">
+      <div className="max-w-7xl w-full bg-white border border-slate-200/80 rounded-3xl shadow-2xl p-4 md:p-8 flex flex-col lg:flex-row gap-8 items-stretch transition-all duration-300">
+        {/* CONTROLS & CLOCK  */}
+        <div className="w-full lg:w-[42%] bg-slate-50/60 border border-slate-200/50 rounded-2xl p-4 md:p-6 flex flex-col justify-between items-center text-center">
           <div className="w-full py-4 border-b border-slate-200/40">
-            <p className="text-slate-400 text-sm font-bold uppercase tracking-wider">
+            <p className="text-slate-400 text-xs md:text-sm font-bold uppercase tracking-wider">
               {currentDate || "Loading System Node..."}
             </p>
-            <h2 className="text-5xl font-black font-mono tracking-tight text-slate-800 mt-2">
+            {/* 🎯 Fix: Mobile par clock thodi choti, bade desktop par vahi original text-5xl */}
+            <h2 className="text-4xl md:text-5xl font-black font-mono tracking-tight text-slate-800 mt-2">
               {currentTime || "00:00:00"}
             </h2>
           </div>
@@ -98,10 +101,12 @@ export default function Punching() {
           {/* Action Trigger Buttons */}
           <div className="my-8 flex items-center justify-center w-full">
             {currentStatus === "CLOCKEDOUT" ? (
-              <div
+              <button
+                type="button"
                 onClick={handleClockIn}
                 disabled={isClockingIn}
-                className="w-56 h-56 rounded-full bg-emerald-50 text-emerald-600 border-2 border-emerald-200 shadow-xl shadow-emerald-100/40 flex flex-col items-center justify-center gap-2 cursor-pointer transition-all duration-300 hover:bg-emerald-100/60 active:scale-[0.97]"
+                /* 🎯 Fix: appearance-none aur overflow-hidden se mobile standard round bounds set ho gaye */
+                className="w-56 h-56 rounded-full bg-emerald-50 text-emerald-600 border-2 border-emerald-200 shadow-xl shadow-emerald-100/40 flex flex-col items-center justify-center gap-2 cursor-pointer transition-all duration-300 hover:bg-emerald-100/60 active:scale-[0.97] disabled:opacity-60 disabled:cursor-not-allowed appearance-none border-solid overflow-hidden outline-none"
               >
                 <span className="text-4xl">⚡</span>
                 <h3 className="font-bold text-xl uppercase tracking-wider">
@@ -110,12 +115,13 @@ export default function Punching() {
                 <p className="text-xs text-emerald-500/80 lowercase">
                   {isClockingIn ? "fetching status..." : "start shift"}
                 </p>
-              </div>
+              </button>
             ) : (
-              <div
+              <button
+                type="button"
                 onClick={handleClockOut}
                 disabled={isClockingOut}
-                className="w-56 h-56 rounded-full bg-rose-50 text-rose-600 border-2 border-rose-200 shadow-xl shadow-rose-100/40 flex flex-col items-center justify-center gap-2 cursor-pointer transition-all duration-300 hover:bg-rose-100/60 active:scale-[0.97]"
+                className="w-56 h-56 rounded-full bg-rose-50 text-rose-600 border-2 border-rose-200 shadow-xl shadow-rose-100/40 flex flex-col items-center justify-center gap-2 cursor-pointer transition-all duration-300 hover:bg-rose-100/60 active:scale-[0.97] disabled:opacity-60 disabled:cursor-not-allowed appearance-none border-solid overflow-hidden outline-none"
               >
                 <span className="text-4xl">🛑</span>
                 <h3 className="font-bold text-xl uppercase tracking-wider">
@@ -124,7 +130,7 @@ export default function Punching() {
                 <p className="text-xs text-rose-500/80 lowercase">
                   {isClockingOut ? "saving data..." : "end shift"}
                 </p>
-              </div>
+              </button>
             )}
           </div>
 
@@ -234,7 +240,7 @@ export default function Punching() {
             )}
           </div>
 
-          {/*  Previous Attendance History */}
+          {/* Previous Attendance History */}
           <div className="flex-1 flex flex-col justify-end">
             <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-3 pl-0.5">
               Previous Attendance Logs
