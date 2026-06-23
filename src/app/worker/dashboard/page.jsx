@@ -309,6 +309,15 @@ export default function WorkerDashboard() {
                 <p className="text-sm font-bold text-slate-800">
                   {activeLocation.locationName || "Main Site Perimeter"}
                 </p>
+                {/* ==================== EXTERNAL MAPS LINK ==================== */}
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${activeLocation.latitude},${activeLocation.longitude}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[11px] font-bold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 border border-emerald-100 px-2 py-0.5 rounded transition-colors"
+                >
+                  Open in Map ↗
+                </a>
                 <p className="text-[11px] text-slate-400 mt-0.5 max-w-xl">
                   Operational coordinates: {activeLocation.latitude},{" "}
                   {activeLocation.longitude}
