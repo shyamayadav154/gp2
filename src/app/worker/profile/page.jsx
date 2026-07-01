@@ -1,6 +1,6 @@
 "use client";
 
-import { useWorker } from "@/context/WorkerContext";
+import { useWorker } from "@/hooks/useWorker";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { FiEdit } from "react-icons/fi";

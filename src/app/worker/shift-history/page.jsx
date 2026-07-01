@@ -1,6 +1,6 @@
 "use client";
 
-import { useWorker } from "@/context/WorkerContext";
+import { useWorker } from "@/hooks/useWorker";
 import { useState } from "react";
 
 export default function ShiftHistory() {
