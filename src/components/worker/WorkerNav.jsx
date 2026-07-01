@@ -1,6 +1,6 @@
 "use client";
 
-import { useWorker } from "@/context/WorkerContext";
+import { useWorker } from "@/hooks/useWorker";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
